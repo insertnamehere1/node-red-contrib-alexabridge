@@ -1,14 +1,17 @@
 {
-  "name": "node-red-node-huehub",
+  "name": "node-red-node-huebridge",
   "version": "0.0.1",
   "description": "Node Red node to allow Amazon Echo to control devices other than Hue bulbs through a hue bridge",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Christopher Dowd <chris@chrisandbev.com.au>",
-  "license": "",
   "dependencies": {
     "peer-ssdp": "0.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/insertnamehere1/node-red-node-huebridge"
+  },
+  "node-red"     : {
+    "nodes": {
+      "hue-bridge": "hue-bridge.js"
+    }
   }
 }
