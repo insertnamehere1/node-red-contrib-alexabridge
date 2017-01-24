@@ -10,20 +10,19 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
 
-
-// handle ssdpPeer ready event.
+        // handle ssdpPeer ready event.
         ssdpPeer.on("ready", function () {
             console.log("UPNP server listening on port 1900.");
         });
 
-// handle ssdpPeer close event. This event will be emitted after `ssdpPeer.close()` is called.
+        // handle ssdpPeer close event. This event will be emitted after `ssdpPeer.close()` is called.
         ssdpPeer.on("close", function () {
             console.log("UPNP server Closing.");
         });
 
-// handle SSDP M-SEARCH messages.
-// param headers is JSON object containing the headers of the SSDP M-SEARCH message as key-value-pair.
-// param address is the socket address of the sender
+        // handle SSDP M-SEARCH messages.
+        // param headers is JSON object containing the headers of the SSDP M-SEARCH message as key-value-pair.
+        // param address is the socket address of the sender
         ssdpPeer.on("search", function (headers, address) {
 
             console.log("SEARCH:", headers, address);
@@ -99,11 +98,18 @@ module.exports = function(RED) {
 
         var server = http.createServer(handleRequest);
 
-// Start the local server listening for connections
+        // Start the local server listening for connections
         server.listen(PORT, function () {
             console.log("Hue Bridge listening on: http://localhost:%s", PORT);
         });
+
+        node.on("close", function() {
+            server.close();
+            ssdpPeer.close();
+        });
     }
 
-    RED.nodes.registerType("Hue Bridge",HueBridge);
+    console.log("Starting Hue-bridge");
+
+    RED.nodes.registerType("Hue-Bridge",HueBridge);
 };

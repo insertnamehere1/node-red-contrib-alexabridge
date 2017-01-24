@@ -11,7 +11,9 @@
   },
   "node-red"     : {
     "nodes": {
-      "hue-bridge": "hue-bridge.js"
+      "hue-bridge": "hue-bridge.js",
+      "hue-output": "hue-output.js"
+
     }
   }
 }
