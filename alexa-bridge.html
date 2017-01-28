@@ -1,24 +1,24 @@
-<script type="text/x-red" data-template-name="Hue-Bridge">
+<script type="text/x-red" data-template-name="Alexa-Bridge">
         <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
         <input type="text" id="node-config-input-host">
 </script>
 
-<script type="text/x-red" data-help-name="Hue-Bridge">
-    <p>A simple node that converts the message payloads into all lower-case characters</p>
+<script type="text/x-red" data-help-name="Alexa-Bridge">
+    <p>Provide a bridge type connection for Alexa devices</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType("Hue-Bridge",{
+    RED.nodes.registerType("Alexa-Bridge",{
         category: 'config',
         color: '#a6bbcf',
         defaults: {
-            name: {value: "testname", required: false}
+            name: {value: "", required: false}
         },
         inputs:0,
-        outputs:1,
+        outputs:0,
         icon: "light.png",
         label: function() {
-            return this.name ? this.name : "Hue-Bridge";
+            return this.name ? this.name : "Alexa-Bridge";
         }
     });
 </script>

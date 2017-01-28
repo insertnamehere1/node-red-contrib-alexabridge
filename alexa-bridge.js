@@ -6,7 +6,7 @@ var ssdpPeer = ssdp.createPeer();
 
 module.exports = function(RED) {
 
-    function HueBridge(config) {
+    function AlexaBridge(config) {
         RED.nodes.createNode(this, config);
         var node = this;
 
@@ -65,10 +65,6 @@ module.exports = function(RED) {
                         var responseStr = '[{"success":{"/lights/' + lightMatch[2] + '/state/on":' + request.data.on + '}}]';
                         console.log("Sending response:", responseStr);
                         response.end(responseStr);
-
-                        // debugging output
-                        var msg = {payload:responseStr};
-                        node.send(msg);
                     });
 
                     // request for individual light state
@@ -100,7 +96,7 @@ module.exports = function(RED) {
 
         // Start the local server listening for connections
         server.listen(PORT, function () {
-            console.log("Hue Bridge listening on: http://localhost:%s", PORT);
+            console.log("Alexa Bridge listening on: http://localhost:%s", PORT);
         });
 
         node.on("close", function() {
@@ -109,7 +105,7 @@ module.exports = function(RED) {
         });
     }
 
-    console.log("Starting Hue-bridge");
+    console.log("Starting Alexa-bridge");
 
-    RED.nodes.registerType("Hue-Bridge",HueBridge);
+    RED.nodes.registerType("Alexa-Bridge",AlexaBridge);
 };

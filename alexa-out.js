@@ -1,6 +1,6 @@
 module.exports = function(RED) {
 
-    function HueOutput(config) {
+    function AlexaOut(config) {
         RED.nodes.createNode(this, config);
 
         var node = this;
@@ -16,5 +16,5 @@ module.exports = function(RED) {
         // code here
     }
 
-    RED.nodes.registerType("Hue-Output",HueOutput);
+    RED.nodes.registerType("Alexa-Out", AlexaOut);
 };

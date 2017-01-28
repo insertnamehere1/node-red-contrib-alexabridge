@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="Hue-Output">
+<script type="text/x-red" data-template-name="Alexa-Out">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
 		<input type="text" id="node-input-server" style="width: 250px;">
@@ -10,29 +10,30 @@
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-friendly"><i class="fa fa-tag"></i> Friendly Name</label>
-		<input type="text" id="node-input-friendly" style="width: 250px;">
+        <label for="node-input-alexa_recognised_name"><i class="fa fa-tag"></i> Alexa Recognised Name</label>
+		<input type="text" id="node-input-alexa_recognised_name" style="width: 250px;">
         </input>
     </div>
 </script>
-<script type="text/x-red" data-help-name="Hue-Output">
-    <p>Takes the output from a Hue Bridge and makes it available to control other devices</p>
+<script type="text/x-red" data-help-name="Alexa-Out">
+    <p>Takes the output from a Alexa Bridge and makes it available to control other devices</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType("Hue-Output",{
+    RED.nodes.registerType("Alexa-Out",{
         category: 'function',
         color: '#a6bbcf',
         defaults: {
             name: {value:"", required: false},
-            friendly: {value:"", required: true},
-            server: {value:"", type:"Hue-Bridge"}
+            alexa_recognised_name: {value:"", required: true},
+            server: {value:"", type:"Alexa-Bridge"}
         },
         inputs:0,
         outputs:1,
         icon: "light.png",
         label: function() {
-            return this.name ? this.name : "Hue-Output";
+            console.log(this.name);
+            return this.name||"alexa out";
         }
     });
 </script>

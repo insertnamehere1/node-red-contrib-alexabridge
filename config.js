@@ -8,7 +8,7 @@
             '<URLBase>http://192.168.1.128:8082/</URLBase>',
             '<device>',
                 '<deviceType>urn:schemas-upnp-org:device:Basic:1</deviceType>',
-                '<friendlyName>Node-Red-Hue-Bridge (192.168.42.128)</friendlyName>',
+                '<friendlyName>Node-Red-Alexa-Bridge (192.168.1.128)</friendlyName>',
                 '<manufacturer>Royal Philips Electronics</manufacturer>',
                 '<manufacturerURL>http://www.philips.com</manufacturerURL>',
                 '<modelDescription>Hue Emulator for Node Red</modelDescription>',
@@ -112,7 +112,6 @@
         }
     }
     };
-
 
 exports.bridgeXml = bridgeXml;
 exports.lightsJson = lightsJson;
