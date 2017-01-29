@@ -1,19 +1,24 @@
 <script type="text/x-red" data-template-name="Alexa-Out">
     <div class="form-row">
-        <label for="node-input-server"><i class="fa fa-task"></i> Server</label>
+        <label for="node-input-server"><i class="fa fa-task"></i> Bridge</label>
 		<input type="text" id="node-input-server" placeholder="Server" style="width: 250px;">
         </input>
     </div>
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-		<input type="text" id="node-input-name" style="width: 250px;">
-        </input>
     </div>
-    <div class="form-row">
+        <div class="form-row">
         <label for="node-input-alexa_recognised_name"><i class="fa fa-tag"></i> Alexa Recognised Name</label>
 		<input type="text" id="node-input-alexa_recognised_name" style="width: 250px;">
         </input>
     </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Node Name</label>
+		<input type="text" id="node-input-name" style="width: 250px;">
+        </input>
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tag"></i> Message Topic</label>
+		<input type="text" id="node-input-topic" style="width: 250px;">
+        </input>
 </script>
 <script type="text/x-red" data-help-name="Alexa-Out">
     <p>Takes the output from a Alexa Bridge and makes it available to control other devices</p>
@@ -26,6 +31,7 @@
         defaults: {
             name: {value:"", required: false},
             alexa_recognised_name: {value:"", required: true},
+            topic: {value:"", required: false},
             server: {value:"", type:"Alexa-Bridge"}
         },
         inputs:0,
