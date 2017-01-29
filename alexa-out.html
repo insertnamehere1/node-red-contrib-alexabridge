@@ -1,7 +1,7 @@
 <script type="text/x-red" data-template-name="Alexa-Out">
     <div class="form-row">
-        <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
-		<input type="text" id="node-input-server" style="width: 250px;">
+        <label for="node-input-server"><i class="fa fa-task"></i> Server</label>
+		<input type="text" id="node-input-server" placeholder="Server" style="width: 250px;">
         </input>
     </div>
     <div class="form-row">
@@ -32,7 +32,6 @@
         outputs:1,
         icon: "light.png",
         label: function() {
-            console.log(this.name);
             return this.name||"alexa out";
         }
     });

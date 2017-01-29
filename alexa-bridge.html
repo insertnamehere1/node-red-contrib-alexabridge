@@ -1,6 +1,12 @@
 <script type="text/x-red" data-template-name="Alexa-Bridge">
-        <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
-        <input type="text" id="node-config-input-host">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-config-input-name" style="width: 250px;"></input>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="icon-bookmark"></i> Port Number</label>
+        <input type="text" id="node-config-input-port"></input>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="Alexa-Bridge">
@@ -12,13 +18,14 @@
         category: 'config',
         color: '#a6bbcf',
         defaults: {
-            name: {value: "", required: false}
+            port: {value: "8082", required: true},
+            name: {value:"", required: false}
         },
         inputs:0,
         outputs:0,
         icon: "light.png",
         label: function() {
-            return this.name ? this.name : "Alexa-Bridge";
+            return this.name||"alexa bridge";
         }
     });
 </script>
