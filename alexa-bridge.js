@@ -1,11 +1,12 @@
 var configuration = require('./config');
-
 var http = require('http');
 var ssdp = require("peer-ssdp");
+var WebSocketServer = require('websocket').server;
+var connectedLights;
 
-// load the file containing connected devices list
-var connectedDevices = configuration.lightsJson;
-
+// keep a count and store clients
+var count = 0;
+var clients = {};
 
 module.exports = function(RED) {
 
@@ -17,11 +18,14 @@ module.exports = function(RED) {
         var server = http.createServer(handleRequest);
         const PORT = config.port;
 
+        // json containing list of connected lights
+        connectedLights = {};
+        connectedLights["lights"] = {};
+
         // handle ssdpPeer ready event.
         ssdpPeer.on("ready", function () {
-            console.log("UPNP server listening on port 1900.");
+            node.log("UPNP Discovery server listening on port 1900.");
         });
-
 
         // handle SSDP M-SEARCH messages.
         // param headers is JSON object containing the headers of the SSDP M-SEARCH message as key-value-pair.
@@ -45,22 +49,59 @@ module.exports = function(RED) {
         node.on('close', function() {
             ssdpPeer.close();
             server.close();
+            sServer.close();
+            wsServer.shutDown();
         });
 
         // Start the local server listening for connections
         server.listen(PORT, function () {
-            console.log("Alexa Bridge listening on: http://localhost:%s", PORT);
+            node.log("UPNP Configuration server listening on: http://localhost:" + PORT);
         });
-    }
 
-    console.log("Register Type: Alexa-Bridge");
+        var sServer = http.createServer(function(request, response) {});
+        sServer.listen(8080, function() {
+            node.log("WebSocket server listening on port 8080");
+        });
+
+        wsServer = new WebSocketServer({
+            httpServer: sServer
+        });
+
+        wsServer.on('request', function(req) {
+            // code here to run on connection
+            var connection = req.accept('echo-protocol', req.origin);
+
+            // Specific id for this client & increment count
+            var id = count++;
+
+            // Store the connection method so we can loop through & contact all clients
+            clients[id] = connection;
+
+            // Create event listener
+            connection.on('message', function (message) {
+
+                // The string message that was sent to us
+                parseDevices(message.utf8Data);
+            });
+
+            connection.on('close', function () {
+                delete clients[id];
+            });
+
+        });
+
+    }
     RED.nodes.registerType("Alexa-Bridge",AlexaBridge);
 
+    function parseDevices(configMessage) {
+        var jsonDevices = JSON.parse(configMessage);
+
+        if(jsonDevices.type = "lights")
+            connectedLights["lights"][jsonDevices.uuid] = jsonDevices.data;
+    }
 
     function handleRequest(request, response) {
-
-        console.log(request.method, request.url);
-
+        //node.log(request.method, request.url);
         var lightMatch = /^\/api\/(\w*)\/lights\/([\w\-]*)/.exec(request.url);
 
         if (lightMatch) {
@@ -68,38 +109,63 @@ module.exports = function(RED) {
             // request to turn light on or off
             if (request.method == 'PUT') {
                 request.on('data', function (chunk) {
-                    console.log("Received PUT data:", chunk.toString());
                     request.data = JSON.parse(chunk);
                 });
                 request.on('end', function () {
+
+                    processRequestData(lightMatch[2], request.data);
+
                     response.writeHead(200, "OK", {'Content-Type': 'application/json'});
-                    var responseStr = '[{"success":{"/lights/' + lightMatch[2] + '/state/on":' + request.data.on + '}}]';
-                    console.log("Sending response:", responseStr);
+                    var responseStr = '[{"success":{"/lights/' + lightMatch[2] + '/state/on":' + JSON.stringify(request.data) + '}}]';
+
                     response.end(responseStr);
                 });
 
             // request for individual light state
             } else {
-                console.log("Sending light ", lightMatch[2]);
+                //node.log("Sending light ", lightMatch[2]);
                 response.writeHead(200, {'Content-Type': 'application/json'});
-                response.end(JSON.stringify(connectedDevices.lights[lightMatch[2]]));
+                response.end(JSON.stringify(connectedLights.lights[lightMatch[2]]));
             }
 
         } else {
 
             // api request for configuration of lights connected to the bridge
             if (/^\/api/.exec(request.url)) {
-                console.log("Sending light details");
+                //node.log("Sending light details");
                 response.writeHead(200, {'Content-Type': 'application/json'});
-                response.end(JSON.stringify(connectedDevices));
+                response.end(JSON.stringify(connectedLights));
 
             // request for description.xml which is bridge configuration
             } else if (request.url == '/description.xml') {
                 var setup = configuration.bridgeXml;
-                console.log("Sending bridgeXml");
                 response.writeHead(200, {'Content-Type': 'application/xml'});
                 response.end(setup);
             }
+        }
+    }
+
+    function processRequestData(light, requestData) {
+
+        // update the connectedLights data
+        if(requestData.hasOwnProperty('on')) {
+            connectedLights.lights[light]["state"]["on"] = requestData.on;
+        }
+
+        if(requestData.hasOwnProperty('bri')) {
+            connectedLights.lights[light]["state"]["bri"] = requestData.bri;
+        }
+
+        //return data
+        var result = {};
+        result["data"] = {};
+        result["data"]["on"] = connectedLights.lights[light]["state"]["on"];
+        result["data"]["bri"] = connectedLights.lights[light]["state"]["bri"];
+        result["uuid"] = light;
+
+        // send to all clients
+        for(var i in clients){
+            clients[i].sendUTF(JSON.stringify(result));
         }
     }
 };

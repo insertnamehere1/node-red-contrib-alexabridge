@@ -46,72 +46,7 @@
             '</device>',
         '</root>'].join("\n");
 
-    var lightsJson = {
-        "lights": { "idnumber1234":
-        {
-            "state":
-            {
-                "on": true,
-                "bri": 254,
-                "hue": 15823,
-                "sat": 88,
-                "effect": "none",
-                "ct": 313,
-                "alert": "none",
-                "colormode": "ct",
-                "reachable": true,
-                "xy": [0.4255, 0.3998]
-            },
-            "type": "Extended color light",
-            "name": "test 1 light",
-            "modelid": "LCT001",
-            "manufacturername": "Philips",
-            "uniqueid": "5102d46c-50d5-4bc7-a180-38623e4bbb08",
-            "swversion": "65003148",
-            "pointsymbol":
-            {
-                "1": "none",
-                "2": "none",
-                "3": "none",
-                "4": "none",
-                "5": "none",
-                "6": "none",
-                "7": "none",
-                "8": "none"
-            }
-        },
-        "idnumber9876":
-        {
-            "state":
-            {"on": false,
-                "bri": 254,
-                "hue": 15823,
-                "sat": 88,
-                "effect": "none",
-                "ct": 313,
-                "alert": "none",
-                "colormode": "ct",
-                "reachable": true,
-                "xy": [0.4255, 0.3998]
-            },
-            "type": "Extended color light",
-            "name": "test 2 light",
-            "modelid": "LCT001",
-            "manufacturername": "Philips",
-            "uniqueid": "69d4f390-9bef-468b-b58e-4495027ff33c",
-            "swversion": "65003148",
-            "pointsymbol":
-            {"1": "none",
-                "2": "none",
-                "3": "none",
-                "4": "none",
-                "5": "none",
-                "6": "none",
-                "7": "none",
-                "8": "none"}
-        }
-    }
-    };
-
 exports.bridgeXml = bridgeXml;
-exports.lightsJson = lightsJson;
+
+
+

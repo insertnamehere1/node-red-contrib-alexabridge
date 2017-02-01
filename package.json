@@ -4,7 +4,9 @@
   "description": "Node Red node to allow Amazon Alexa to control devices like wemo bulbs through a bridge",
   "license": "MIT",
   "dependencies": {
-    "peer-ssdp": "0.0.5"
+    "sha1": "1.1.1",
+    "peer-ssdp": "0.0.5",
+    "websocket": "1.0.24"
   },
   "repository": {
     "type": "git",
